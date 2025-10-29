@@ -1,55 +1,39 @@
-# 🚦 YOLO Traffic Cone Detection System
+# Traffic Cone Detection
 
-[![GitHub stars](https://img.shields.io/github/stars/prabinLC/Yolo-Traffic-Cone-detection-?style=social)](https://github.com/prabinLC/Yolo-Traffic-Cone-detection-)
-[![GitHub forks](https://img.shields.io/github/forks/prabinLC/Yolo-Traffic-Cone-detection-?style=social)](https://github.com/prabinLC/Yolo-Traffic-Cone-detection-)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+This is a YOLOv5-based model that detects traffic cones in real-time using camera feed. The model can identify traffic cones and classify their colors (red, yellow, green, blue) using computer vision techniques.
 
-A complete **YOLOv5-based traffic cone detection system** with real-time color classification. This project detects traffic cones in images and video streams, and classifies their colors using K-means clustering for enhanced traffic safety applications.
+## What it does
 
-![Traffic Cone Detection Demo](https://user-images.githubusercontent.com/62132206/120334300-d1a31e80-c2f0-11eb-962e-17c4d5481917.gif)
+- Detects traffic cones in live camera feed
+- Classifies cone colors automatically
+- Processes video at ~5-6 FPS on CPU
+- Shows bounding boxes around detected cones
 
-## ✨ Features
+## How to run
 
-- 🎥 **Real-time Detection**: Live camera feed processing at ~5-6 FPS
-- 🎨 **Color Classification**: Automatic color detection (red, yellow, green, blue, unknown)
-- 🚀 **Easy Setup**: One-click execution via batch file
-- 🖥️ **Cross-platform**: Works on Windows, with easy adaptation for other platforms
-- ⚡ **YOLOv5 Integration**: Based on the proven YOLOv5 architecture
-- 🎯 **Custom Model**: Trained on traffic cone datasets for optimal performance
-- 🔧 **Plug & Play**: Pre-configured with all dependencies
+### Quick Start
 
-## 📋 Requirements
+1. Double-click `run_camera_detection.bat`
+2. Press 'q' to quit
 
-All dependencies are automatically managed. Core requirements:
-
-- **Python 3.11+**
-- **PyTorch** (CPU optimized)
-- **OpenCV**
-- **NumPy**
-- **Matplotlib**
-
-## 🚀 Quick Start
-
-### Option 1: One-Click Launch (Recommended)
-
-1. **Double-click** `run_camera_detection.bat`
-2. The camera window will open automatically
-3. Point camera at traffic cones
-4. Press **'q'** or **ESC** to quit
-
-### Option 2: Command Line
+### Command Line
 
 ```bash
 cd yolov5
 python detect_custom.py --weights "../model/best.pt" --source 0 --img-size 640 --conf-thres 0.25 --view-img
 ```
 
-## 🎮 Controls
+### Parameters
 
-| Key        | Action                 |
-| ---------- | ---------------------- |
-| **q**      | Quit detection         |
-| **ESC**    | Quit detection         |
+- `--source 0` = Use webcam (try 1, 2 for other cameras)
+- `--source "../images"` = Process images from folder
+- `--conf-thres 0.25` = Detection confidence (lower = more sensitive)
+
+## Credits
+
+Based on the original work by [jhan15](https://github.com/jhan15/traffic_cones_detection.git)
+| **q** | Quit detection |
+| **ESC** | Quit detection |
 | **Ctrl+C** | Force stop in terminal |
 
 ## 📁 Project Structure
