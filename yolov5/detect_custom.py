@@ -19,6 +19,9 @@ def detect(save_img=False):
     source, weights, view_img, save_txt, imgsz = opt.source, opt.weights, opt.view_img, opt.save_txt, opt.img_size
     webcam = source.isnumeric() or source.endswith('.txt') or source.lower().startswith(
         ('rtsp://', 'rtmp://', 'http://'))
+    
+    # Quit flag for clean exit
+    quit_flag = False
 
     # Directories
     save_dir = Path(increment_path(Path(opt.project) / opt.name, exist_ok=opt.exist_ok))  # increment run
@@ -59,6 +62,11 @@ def detect(save_img=False):
     # Run inference
     if device.type != 'cpu':
         model(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(model.parameters())))  # run once
+    
+    # Display controls info
+    if view_img:
+        print("Controls: Press 'q' or ESC in the detection window to quit")
+    
     t0 = time.time()
     for path, img, im0s, vid_cap in dataset:
         img = torch.from_numpy(img).to(device)
@@ -119,7 +127,12 @@ def detect(save_img=False):
             # Stream results
             if view_img:
                 cv2.imshow(str(p), im0)
-                cv2.waitKey(1)  # 1 millisecond
+                key = cv2.waitKey(1) & 0xFF
+                if key == ord('q') or key == 27:  # 'q' key or ESC key to quit
+                    print("Quit key pressed. Stopping detection...")
+                    quit_flag = True
+                    cv2.destroyAllWindows()  # close all OpenCV windows
+                    break
 
             # Save results (image with detections)
             if save_img:
@@ -137,7 +150,14 @@ def detect(save_img=False):
                         h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
                         vid_writer = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*fourcc), fps, (w, h))
                     vid_writer.write(im0)
+        
+        # Check if quit was requested
+        if quit_flag:
+            break
 
+    # Cleanup
+    cv2.destroyAllWindows()  # close all OpenCV windows
+    
     if save_txt or save_img:
         s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
         print(f"Results saved to {save_dir}{s}")
